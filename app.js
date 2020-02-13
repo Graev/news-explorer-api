@@ -7,7 +7,7 @@ const helmet = require('helmet');
 const { errors } = require('celebrate');
 const routerIndex = require('./routes/index');
 
-const { PORT, DATABASE_URL, NODE_ENV } = require('./config');
+const { PORT, DATABASE_URL } = require('./config');
 const { NotFoundError } = require('./errorsCatch/errorsCatch');
 const { requestLogger, errorsLogger } = require('./middlewares/logger');
 
@@ -45,5 +45,4 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
-  console.log(`NODE_ENV ${NODE_ENV}`);
 });
