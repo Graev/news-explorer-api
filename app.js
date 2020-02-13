@@ -26,7 +26,7 @@ mongoose.connect(DATABASE_URL, {
 
 app.use(requestLogger);
 
-app.use('/api', routerIndex);
+app.use('', routerIndex);
 
 app.all('/*', (req, res, next) => {
   const err = new NotFoundError('Запрашиваемый ресурс не найден');

@@ -44,7 +44,9 @@ module.exports.createArticle = (req, res, next) => {
     image,
     owner: req.user._id,
   })
-    .then(article => res.status(201).send({ data: article }))
+    .then(article =>
+      res.status(201).send({ data: article, message: 'Статья создана' })
+    )
     .catch(
       next
       // res.status(500).send({ message: 'Произошла ошибка', err });

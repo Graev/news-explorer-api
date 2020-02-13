@@ -14,7 +14,7 @@ module.exports.getUserData = (req, res, next) => {
       if (!user) {
         throw new NotFoundError('Пользователь не найден');
       }
-      return res.send({ data: user });
+      return res.send({ data: { email: user.email, name: user.name } });
     })
     .catch(next);
 };
