@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const { errors } = require('celebrate');
+const rateLimit = require('express-rate-limit');
 const routerIndex = require('./routes/index');
 
 const { PORT, DATABASE_URL } = require('./config');
@@ -23,6 +24,12 @@ mongoose.connect(DATABASE_URL, {
   useFindAndModify: false,
   useUnifiedTopology: true,
 });
+
+const limiter = rateLimit({
+  windowMs: 10 * 60 * 1000, // 10 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+});
+app.use(limiter);
 
 app.use(requestLogger);
 
