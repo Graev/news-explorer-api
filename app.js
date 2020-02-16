@@ -7,10 +7,12 @@ const helmet = require('helmet');
 const { errors } = require('celebrate');
 const rateLimit = require('express-rate-limit');
 const routerIndex = require('./routes/index');
+const notFound = require('./constants/constants');
 
 const { PORT, DATABASE_URL } = require('./config');
 const { NotFoundError } = require('./errorsCatch/errorsCatch');
 const { requestLogger, errorsLogger } = require('./middlewares/logger');
+const routerError = require('./middlewares/errors');
 
 const app = express();
 app.use(helmet());
@@ -36,19 +38,14 @@ app.use(requestLogger);
 app.use('', routerIndex);
 
 app.all('/*', (req, res, next) => {
-  const err = new NotFoundError('Запрашиваемый ресурс не найден');
+  const err = new NotFoundError(notFound);
   next(err);
 });
 
 app.use(errorsLogger);
 app.use(errors());
-// eslint-disable-next-line no-unused-vars
-app.use((err, req, res, next) => {
-  const { statusCode = 500, message } = err;
-  res.status(statusCode).send({
-    message: statusCode === 500 ? 'На сервере произошла ошибка' : message,
-  });
-});
+
+app.use(routerError);
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);

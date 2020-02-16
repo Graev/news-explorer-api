@@ -1,9 +1,11 @@
 const Article = require('../models/article');
+const { NotFoundError, AccessError } = require('../errorsCatch/errorsCatch');
 const {
-  NotFoundError,
-  BadRequest,
-  AccessError,
-} = require('../errorsCatch/errorsCatch');
+  articleCreated,
+  cartNotFound,
+  youDidntCreate,
+  articleDeleteSuccessfully,
+} = require('../constants/constants');
 
 module.exports.getUserArticles = (req, res, next) => {
   Article.find({ owner: req.user._id })
@@ -13,27 +15,6 @@ module.exports.getUserArticles = (req, res, next) => {
 
 module.exports.createArticle = (req, res, next) => {
   const { keyword, title, text, date, source, link, image } = req.body;
-  if (keyword === undefined) {
-    throw new BadRequest('Не введено поле keyword');
-  }
-  if (title === undefined) {
-    throw new BadRequest('Не введено поле title');
-  }
-  if (text === undefined) {
-    throw new BadRequest('Не введено поле text');
-  }
-  if (date === undefined) {
-    throw new BadRequest('Не введено поле date');
-  }
-  if (source === undefined) {
-    throw new BadRequest('Не введено поле source');
-  }
-  if (link === undefined) {
-    throw new BadRequest('Не введено поле link');
-  }
-  if (image === undefined) {
-    throw new BadRequest('Не введено поле image');
-  }
   Article.create({
     keyword,
     title,
@@ -45,7 +26,7 @@ module.exports.createArticle = (req, res, next) => {
     owner: req.user._id,
   })
     .then(article =>
-      res.status(201).send({ data: article, message: 'Статья создана' })
+      res.status(201).send({ data: article, message: articleCreated })
     )
     .catch(
       next
@@ -57,13 +38,16 @@ module.exports.deleteArticle = (req, res, next) => {
   Article.findById(req.params.articleId)
     .then(article => {
       if (!article) {
-        throw new NotFoundError('Карточка не найдена');
+        throw new NotFoundError(cartNotFound);
       }
       if (!article.owner._id.equals(req.user._id)) {
-        throw new AccessError('Не Вы создавали, не Вам и удалять');
+        throw new AccessError(youDidntCreate);
       }
       Article.findByIdAndDelete(req.params.articleId).then(articleDel => {
-        return res.send({ data: articleDel, message: 'Успешное удаление' });
+        return res.send({
+          data: articleDel,
+          message: articleDeleteSuccessfully,
+        });
       });
     })
     .catch(next);
