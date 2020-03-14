@@ -48,6 +48,7 @@ module.exports.createUser = (req, res, next) => {
 };
 
 module.exports.login = (req, res, next) => {
+  console.log('object', req.body.email, req.body.password);
   const { email, password } = req.body;
 
   User.findUserByCredentials(email, password)
@@ -61,10 +62,21 @@ module.exports.login = (req, res, next) => {
           httpOnly: true,
           sameSite: true,
         })
+        .status(201)
+        .send({ name: user.name })
         .end();
     })
     .catch(() => {
-      throw new AuthError(authError);
+      console.log('aa');
+      throw new AuthError('Ошибка входа');
     })
     .catch(next);
+};
+
+module.exports.logout = (req, res, next) => {
+  res
+    .clearCookie('jwt')
+    .status(201)
+    .send({ info: 'Succes' })
+    .end();
 };

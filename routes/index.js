@@ -5,11 +5,12 @@ const {
   validateSignup,
   validateSignin,
 } = require('../validator/requestValidation');
-const { login, createUser } = require('../controllers/users');
+const { login, createUser, logout } = require('../controllers/users');
 const auth = require('../middlewares/auth');
 
 router.post('/signup', validateSignup, createUser);
 router.post('/signin', validateSignin, login);
+router.delete('/signin', logout);
 
 router.use(auth);
 

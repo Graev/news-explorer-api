@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const { errors } = require('celebrate');
 const rateLimit = require('express-rate-limit');
+const cors = require('cors');
 const routerIndex = require('./routes/index');
 const notFound = require('./constants/constants');
 
@@ -15,7 +16,25 @@ const { requestLogger, errorsLogger } = require('./middlewares/logger');
 const routerError = require('./middlewares/errors');
 
 const app = express();
+// app.use((req, res, next) => {
+//   console.log('object213');
+//   res.header('Access-Control-Allow-Origin', '*');
+//   res.header(
+//     'Access-Control-Allow-Headers',
+//     'Origin, X-Requested-With, Content-Type, Accept'
+//   );
+//   res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
+//   next();
+// });
+app.use(
+  cors({
+    allowedHeaders: 'Content-Type',
+    origin: 'http://127.0.0.1:8080',
+    credentials: true,
+  })
+);
 app.use(helmet());
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -35,7 +54,7 @@ app.use(limiter);
 
 app.use(requestLogger);
 
-app.use('', routerIndex);
+app.use('/', routerIndex);
 
 app.all('/*', (req, res, next) => {
   const err = new NotFoundError(notFound);
