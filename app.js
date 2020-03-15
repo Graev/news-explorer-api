@@ -25,7 +25,6 @@ const app = express();
 //   res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
 //   next();
 // });
-console.log('object');
 
 app.use(helmet());
 
@@ -48,7 +47,17 @@ app.use(limiter);
 
 app.use(requestLogger);
 
-app.use('/', cors(), routerIndex);
+app.use(
+  '/',
+  app.use(
+    cors({
+      origin: 'http://orevo.xyz',
+      allowedHeaders: 'Content-Type',
+      credentials: true,
+    })
+  ),
+  routerIndex
+);
 
 app.all('/*', (req, res, next) => {
   const err = new NotFoundError(notFound);
