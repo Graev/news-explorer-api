@@ -26,13 +26,13 @@ module.exports.validateAddArticle = celebrate({
   body: Joi.object().keys({
     keyword: Joi.string().required(),
     title: Joi.string().required(),
-    text: Joi.string().required(),
-    date: Joi.string().required(),
-    source: Joi.string().required(),
-    link: Joi.string()
+    description: Joi.string().required(),
+    publishedAt: Joi.string().required(),
+    source: Joi.object().required(),
+    url: Joi.string()
       .required()
       .uri(),
-    image: Joi.string()
+    urlToImage: Joi.string()
       .required()
       .uri(),
   }),

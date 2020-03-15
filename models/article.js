@@ -10,19 +10,19 @@ const articleSchema = new mongoose.Schema({
     required: true,
     type: String,
   },
-  text: {
+  description: {
     required: true,
     type: String,
   },
-  date: {
+  publishedAt: {
     required: true,
     type: String,
   },
   source: {
     required: true,
-    type: String,
+    type: Object,
   },
-  link: {
+  url: {
     type: String,
     required: true,
     validate: validator({
@@ -30,7 +30,7 @@ const articleSchema = new mongoose.Schema({
       message: 'Введена не ссылка',
     }),
   },
-  image: {
+  urlToImage: {
     type: String,
     required: true,
     validate: validator({

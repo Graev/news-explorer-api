@@ -37,7 +37,9 @@ module.exports.createUser = (req, res, next) => {
             name,
           })
             .then(() =>
-              res.status(201).send({ message: userCreateSuccessfully })
+              res
+                .status(201)
+                .send({ status: 201, messageSucces: userCreateSuccessfully })
             )
             .catch(next);
         });
@@ -63,11 +65,10 @@ module.exports.login = (req, res, next) => {
           sameSite: true,
         })
         .status(201)
-        .send({ name: user.name })
+        .send({ name: user.name, token })
         .end();
     })
     .catch(() => {
-      console.log('aa');
       throw new AuthError('Ошибка входа');
     })
     .catch(next);

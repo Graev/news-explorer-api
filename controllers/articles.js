@@ -14,15 +14,23 @@ module.exports.getUserArticles = (req, res, next) => {
 };
 
 module.exports.createArticle = (req, res, next) => {
-  const { keyword, title, text, date, source, link, image } = req.body;
+  const {
+    keyword,
+    title,
+    description,
+    publishedAt,
+    source,
+    url,
+    urlToImage,
+  } = req.body;
   Article.create({
     keyword,
     title,
-    text,
-    date,
+    description,
+    publishedAt,
     source,
-    link,
-    image,
+    url,
+    urlToImage,
     owner: req.user._id,
   })
     .then(article =>
