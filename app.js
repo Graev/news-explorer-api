@@ -28,7 +28,7 @@ const app = express();
 // });
 app.use(
   cors({
-    origin: 'http://orevo.xyz',
+    origin: '*',
     allowedHeaders: 'Content-Type',
     credentials: true,
   })
