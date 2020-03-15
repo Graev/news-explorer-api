@@ -49,13 +49,11 @@ app.use(requestLogger);
 
 app.use(
   '/',
-  app.use(
-    cors({
-      origin: 'http://orevo.xyz',
-      allowedHeaders: 'Content-Type',
-      credentials: true,
-    })
-  ),
+  cors({
+    origin: 'http://orevo.xyz',
+    allowedHeaders: 'Content-Type',
+    credentials: true,
+  }),
   routerIndex
 );
 
