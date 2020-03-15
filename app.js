@@ -25,6 +25,7 @@ const app = express();
 //   res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
 //   next();
 // });
+console.log('object');
 app.use(
   cors({
     credentials: true,
