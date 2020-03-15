@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "deployKey": "scp ./.env graev_login@84.201.158.97:/home/graev_login/news-explorer-api"
   },
   "keywords": [],
   "author": "Graev Konstantin",

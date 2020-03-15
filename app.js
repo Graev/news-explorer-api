@@ -29,7 +29,7 @@ const app = express();
 app.use(
   cors({
     allowedHeaders: 'Content-Type',
-    origin: 'http://127.0.0.1:8080',
+    origin: ['http://orevo.xyz', 'http://www.orevo.xyz'],
     credentials: true,
   })
 );
