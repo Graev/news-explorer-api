@@ -16,17 +16,22 @@ const { requestLogger, errorsLogger } = require('./middlewares/logger');
 const routerError = require('./middlewares/errors');
 
 const app = express();
-app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', 'http://orevo.xyz');
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept'
-  );
-  res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
-
-  next();
-});
-
+// app.use((req, res, next) => {
+//   res.header('Access-Control-Allow-Origin', '*');
+//   res.header(
+//     'Access-Control-Allow-Headers',
+//     'Origin, X-Requested-With, Content-Type, Accept'
+//   );
+//   res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
+//   next();
+// });
+app.use(
+  cors({
+    origin: 'http://orevo.xyz',
+    allowedHeaders: 'Content-Type',
+    credentials: true,
+  })
+);
 app.use(helmet());
 
 app.use(bodyParser.json());
