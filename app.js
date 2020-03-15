@@ -32,7 +32,6 @@ app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(cors());
 
 mongoose.connect(DATABASE_URL, {
   useNewUrlParser: true,
@@ -49,7 +48,7 @@ app.use(limiter);
 
 app.use(requestLogger);
 
-app.use('/', routerIndex);
+app.use('/', cors(), routerIndex);
 
 app.all('/*', (req, res, next) => {
   const err = new NotFoundError(notFound);
