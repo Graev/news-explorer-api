@@ -25,13 +25,25 @@ const app = express();
 //   res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
 //   next();
 // });
-app.use(
-  cors({
-    origin: 'http://orevo.xyz',
-    allowedHeaders: 'Content-Type',
-    credentials: true,
-  })
-);
+
+const whitelist = [
+  'http://orevo.xyz',
+  'http://www.orevo.xyz',
+  'https://orevo.xyz',
+  'https://www.orevo.xyz',
+];
+const corsOptions = {
+  origin(origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  allowedHeaders: 'Content-Type',
+  credentials: true,
+};
+app.use(cors(corsOptions));
 app.use(helmet());
 
 app.use(bodyParser.json());
